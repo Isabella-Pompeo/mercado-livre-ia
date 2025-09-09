@@ -44,15 +44,15 @@ export default function WelcomeScreen() {
 
         <View style={styles.featuresContainer}>
           <View style={styles.feature}>
-            <Zap size={32} color="#FFFFFF" />
+            <Zap size={24} color="#FFFFFF" />
             <Text style={styles.featureText}>Automações Verificadas</Text>
           </View>
           <View style={styles.feature}>
-            <Shield size={32} color="#FFFFFF" />
+            <Shield size={24} color="#FFFFFF" />
             <Text style={styles.featureText}>Pagamento Seguro</Text>
           </View>
           <View style={styles.feature}>
-            <Users size={32} color="#FFFFFF" />
+            <Users size={24} color="#FFFFFF" />
             <Text style={styles.featureText}>Suporte Garantido</Text>
           </View>
         </View>
@@ -132,8 +132,10 @@ const styles = StyleSheet.create({
   },
   featuresContainer: {
     flexDirection: 'row',
+    gap: 20,
     justifyContent: 'space-around',
     width: '100%',
+    flexWrap: 'wrap',
     marginBottom: 60,
   },
   feature: {
