@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Alert, Image, useWindowDimensions } from 'react-native';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProducts } from '@/contexts/ProductContext';
 import { useRouter } from 'expo-router';
@@ -10,6 +10,8 @@ export default function SellScreen() {
   const { user } = useAuth();
   const { addProduct, categories } = useProducts();
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const isSmallScreen = width < 375;
   
   const [formData, setFormData] = useState({
     title: '',
@@ -335,60 +337,60 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   headerTitle: {
-    fontSize: 24,
+    fontSize: isSmallScreen ? 20 : 24,
     fontFamily: 'Inter-Bold',
     color: '#FFFFFF',
   },
   content: {
     flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 24,
+    paddingHorizontal: isSmallScreen ? 16 : 24,
+    paddingTop: isSmallScreen ? 20 : 24,
   },
   infoCard: {
     flexDirection: 'row',
     backgroundColor: '#E3F2FD',
-    padding: 16,
+    padding: isSmallScreen ? 12 : 16,
     borderRadius: 12,
-    marginBottom: 32,
+    marginBottom: isSmallScreen ? 24 : 32,
   },
   infoText: {
     flex: 1,
     marginLeft: 12,
   },
   infoTitle: {
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     fontFamily: 'Inter-SemiBold',
     color: '#1976D2',
     marginBottom: 4,
   },
   infoDescription: {
-    fontSize: 14,
+    fontSize: isSmallScreen ? 12 : 14,
     fontFamily: 'Inter-Regular',
     color: '#1976D2',
     lineHeight: 20,
   },
   inputGroup: {
-    marginBottom: 24,
+    marginBottom: isSmallScreen ? 20 : 24,
   },
   label: {
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     fontFamily: 'Inter-SemiBold',
     color: '#333333',
-    marginBottom: 8,
+    marginBottom: isSmallScreen ? 6 : 8,
   },
   input: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#E9ECEF',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    fontSize: 16,
+    paddingHorizontal: isSmallScreen ? 12 : 16,
+    paddingVertical: isSmallScreen ? 12 : 16,
+    fontSize: isSmallScreen ? 14 : 16,
     fontFamily: 'Inter-Regular',
     color: '#333333',
   },
   textArea: {
-    height: 120,
+    height: isSmallScreen ? 100 : 120,
     textAlignVertical: 'top',
   },
   priceInputContainer: {
@@ -398,7 +400,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#E9ECEF',
-    paddingHorizontal: 16,
+    paddingHorizontal: isSmallScreen ? 12 : 16,
   },
   priceIcon: {
     marginRight: 8,
@@ -410,12 +412,12 @@ const styles = StyleSheet.create({
   },
   categoryOptions: {
     flexDirection: 'row',
-    gap: 8,
+    gap: isSmallScreen ? 6 : 8,
     paddingHorizontal: 4,
   },
   categoryOption: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: isSmallScreen ? 12 : 16,
+    paddingVertical: isSmallScreen ? 6 : 8,
     borderRadius: 20,
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
@@ -426,7 +428,7 @@ const styles = StyleSheet.create({
     borderColor: '#3483FA',
   },
   categoryOptionText: {
-    fontSize: 14,
+    fontSize: isSmallScreen ? 12 : 14,
     fontFamily: 'Inter-SemiBold',
     color: '#666666',
   },
@@ -434,11 +436,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   licenseOptions: {
-    gap: 8,
+    gap: isSmallScreen ? 6 : 8,
   },
   licenseOption: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: isSmallScreen ? 12 : 16,
+    paddingVertical: isSmallScreen ? 10 : 12,
     borderRadius: 8,
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
@@ -449,7 +451,7 @@ const styles = StyleSheet.create({
     borderColor: '#3483FA',
   },
   licenseOptionText: {
-    fontSize: 14,
+    fontSize: isSmallScreen ? 12 : 14,
     fontFamily: 'Inter-SemiBold',
     color: '#666666',
   },
@@ -460,25 +462,25 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: isSmallScreen ? 16 : 18,
     fontFamily: 'Inter-Bold',
     color: '#333333',
-    marginBottom: 16,
+    marginBottom: isSmallScreen ? 12 : 16,
   },
   mediaGroup: {
-    marginBottom: 20,
+    marginBottom: isSmallScreen ? 16 : 20,
   },
   mediaLabel: {
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     fontFamily: 'Inter-SemiBold',
     color: '#333333',
     marginBottom: 4,
   },
   mediaDescription: {
-    fontSize: 14,
+    fontSize: isSmallScreen ? 12 : 14,
     fontFamily: 'Inter-Regular',
     color: '#666666',
-    marginBottom: 12,
+    marginBottom: isSmallScreen ? 8 : 12,
     lineHeight: 20,
   },
   uploadButton: {
@@ -490,15 +492,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#3483FA',
     borderStyle: 'dashed',
-    paddingVertical: 16,
-    paddingHorizontal: 24,
+    paddingVertical: isSmallScreen ? 12 : 16,
+    paddingHorizontal: isSmallScreen ? 20 : 24,
   },
   uploadButtonSuccess: {
     borderColor: '#28A745',
     borderStyle: 'solid',
   },
   uploadButtonText: {
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     fontFamily: 'Inter-SemiBold',
     color: '#3483FA',
     marginLeft: 8,
@@ -508,39 +510,39 @@ const styles = StyleSheet.create({
   },
   imagePreview: {
     flexDirection: 'row',
-    marginTop: 12,
-    gap: 8,
+    marginTop: isSmallScreen ? 8 : 12,
+    gap: isSmallScreen ? 6 : 8,
   },
   previewImage: {
-    width: 60,
-    height: 60,
+    width: isSmallScreen ? 50 : 60,
+    height: isSmallScreen ? 50 : 60,
     borderRadius: 8,
     backgroundColor: '#F0F0F0',
   },
   submitButton: {
     backgroundColor: '#FF6900',
     borderRadius: 28,
-    paddingVertical: 16,
-    paddingHorizontal: 32,
+    paddingVertical: isSmallScreen ? 14 : 16,
+    paddingHorizontal: isSmallScreen ? 28 : 32,
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: isSmallScreen ? 12 : 16,
   },
   submitButtonDisabled: {
     opacity: 0.6,
   },
   submitButtonText: {
-    fontSize: 18,
+    fontSize: isSmallScreen ? 16 : 18,
     fontFamily: 'Inter-Bold',
     color: '#FFFFFF',
   },
   bottomNote: {
     backgroundColor: '#FFF3CD',
-    padding: 16,
+    padding: isSmallScreen ? 12 : 16,
     borderRadius: 12,
-    marginBottom: 32,
+    marginBottom: isSmallScreen ? 24 : 32,
   },
   bottomNoteText: {
-    fontSize: 14,
+    fontSize: isSmallScreen ? 12 : 14,
     fontFamily: 'Inter-Regular',
     color: '#856404',
     textAlign: 'center',
@@ -554,28 +556,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 48,
   },
   unauthorizedTitle: {
-    fontSize: 24,
+    fontSize: isSmallScreen ? 20 : 24,
     fontFamily: 'Inter-Bold',
     color: '#333333',
-    marginBottom: 16,
+    marginBottom: isSmallScreen ? 12 : 16,
     textAlign: 'center',
   },
   unauthorizedDescription: {
-    fontSize: 16,
+    fontSize: isSmallScreen ? 14 : 16,
     fontFamily: 'Inter-Regular',
     color: '#666666',
     textAlign: 'center',
     lineHeight: 24,
-    marginBottom: 32,
+    marginBottom: isSmallScreen ? 24 : 32,
   },
   loginButton: {
     backgroundColor: '#3483FA',
     borderRadius: 28,
-    paddingVertical: 16,
-    paddingHorizontal: 32,
+    paddingVertical: isSmallScreen ? 14 : 16,
+    paddingHorizontal: isSmallScreen ? 28 : 32,
   },
   loginButtonText: {
-    fontSize: 18,
+    fontSize: isSmallScreen ? 16 : 18,
     fontFamily: 'Inter-Bold',
     color: '#FFFFFF',
   },

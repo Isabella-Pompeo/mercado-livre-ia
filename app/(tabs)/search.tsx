@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity, Image, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity, Image, FlatList, useWindowDimensions } from 'react-native';
 import { useProducts } from '@/contexts/ProductContext';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Search as SearchIcon, Filter, Star, ShieldCheck } from 'lucide-react-native';
@@ -12,6 +12,8 @@ export default function SearchScreen() {
   const { products, categories, searchProducts, getProductsByCategory } = useProducts();
   const router = useRouter();
   const params = useLocalSearchParams();
+  const { width } = useWindowDimensions();
+  const isSmallScreen = width < 375;
 
   useEffect(() => {
     if (params.category) {
@@ -90,12 +92,12 @@ export default function SearchScreen() {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, isSmallScreen && styles.headerSmall]}>
         <View style={styles.searchContainer}>
-          <View style={styles.searchInputContainer}>
-            <SearchIcon size={20} color="#999999" style={styles.searchIcon} />
+          <View style={[styles.searchInputContainer, isSmallScreen && styles.searchInputContainerSmall]}>
+            <SearchIcon size={isSmallScreen ? 16 : 20} color="#999999" style={styles.searchIcon} />
             <TextInput
-              style={styles.searchInput}
+              style={[styles.searchInput, isSmallScreen && styles.searchInputSmall]}
               placeholder="Buscar automações, chatbots..."
               value={searchQuery}
               onChangeText={handleSearch}
@@ -103,33 +105,35 @@ export default function SearchScreen() {
             />
           </View>
           <TouchableOpacity
-            style={styles.filterButton}
+            style={[styles.filterButton, isSmallScreen && styles.filterButtonSmall]}
             onPress={() => setShowFilters(!showFilters)}
           >
-            <Filter size={20} color="#3483FA" />
+            <Filter size={isSmallScreen ? 16 : 20} color="#3483FA" />
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Categories Filter */}
       {showFilters && (
-        <View style={styles.filtersContainer}>
-          <Text style={styles.filtersTitle}>Categorias</Text>
+        <View style={[styles.filtersContainer, isSmallScreen && styles.filtersContainerSmall]}>
+          <Text style={[styles.filtersTitle, isSmallScreen && styles.filtersTitleSmall]}>Categorias</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.categoriesFilter}
+            contentContainerStyle={[styles.categoriesFilter, isSmallScreen && styles.categoriesFilterSmall]}
           >
             <TouchableOpacity
               style={[
                 styles.categoryFilterButton,
-                !selectedCategory && styles.categoryFilterButtonActive
+                !selectedCategory && styles.categoryFilterButtonActive,
+                isSmallScreen && styles.categoryFilterButtonSmall
               ]}
               onPress={() => handleCategorySelect('')}
             >
               <Text style={[
                 styles.categoryFilterText,
-                !selectedCategory && styles.categoryFilterTextActive
+                !selectedCategory && styles.categoryFilterTextActive,
+                isSmallScreen && styles.categoryFilterTextSmall
               ]}>
                 Todas
               </Text>
@@ -139,13 +143,15 @@ export default function SearchScreen() {
                 key={category}
                 style={[
                   styles.categoryFilterButton,
-                  selectedCategory === category && styles.categoryFilterButtonActive
+                  selectedCategory === category && styles.categoryFilterButtonActive,
+                  isSmallScreen && styles.categoryFilterButtonSmall
                 ]}
                 onPress={() => handleCategorySelect(category)}
               >
                 <Text style={[
                   styles.categoryFilterText,
-                  selectedCategory === category && styles.categoryFilterTextActive
+                  selectedCategory === category && styles.categoryFilterTextActive,
+                  isSmallScreen && styles.categoryFilterTextSmall
                 ]}>
                   {category}
                 </Text>
@@ -156,13 +162,13 @@ export default function SearchScreen() {
       )}
 
       {/* Results Header */}
-      <View style={styles.resultsHeader}>
-        <Text style={styles.resultsCount}>
+      <View style={[styles.resultsHeader, isSmallScreen && styles.resultsHeaderSmall]}>
+        <Text style={[styles.resultsCount, isSmallScreen && styles.resultsCountSmall]}>
           {filteredProducts.length} resultado{filteredProducts.length !== 1 ? 's' : ''} encontrado{filteredProducts.length !== 1 ? 's' : ''}
         </Text>
         {selectedCategory && (
           <TouchableOpacity onPress={() => handleCategorySelect('')}>
-            <Text style={styles.clearFilters}>Limpar filtros</Text>
+            <Text style={[styles.clearFilters, isSmallScreen && styles.clearFiltersSmall]}>Limpar filtros</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -174,14 +180,14 @@ export default function SearchScreen() {
         keyExtractor={(item) => item.id}
         style={styles.productsList}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.productsListContent}
-        ItemSeparatorComponent={() => <View style={styles.productSeparator} />}
+        contentContainerStyle={[styles.productsListContent, isSmallScreen && styles.productsListContentSmall]}
+        ItemSeparatorComponent={() => <View style={[styles.productSeparator, isSmallScreen && styles.productSeparatorSmall]} />}
       />
 
       {filteredProducts.length === 0 && (
-        <View style={styles.emptyState}>
-          <Text style={styles.emptyStateTitle}>Nenhum resultado encontrado</Text>
-          <Text style={styles.emptyStateDescription}>
+        <View style={[styles.emptyState, isSmallScreen && styles.emptyStateSmall]}>
+          <Text style={[styles.emptyStateTitle, isSmallScreen && styles.emptyStateTitleSmall]}>Nenhum resultado encontrado</Text>
+          <Text style={[styles.emptyStateDescription, isSmallScreen && styles.emptyStateDescriptionSmall]}>
             Tente buscar com outras palavras-chave ou explore as categorias disponíveis.
           </Text>
         </View>
@@ -203,6 +209,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E9ECEF',
   },
+  headerSmall: {
+    paddingTop: 50,
+    paddingBottom: 12,
+    paddingHorizontal: 16,
+  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -217,6 +228,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     height: 48,
   },
+  searchInputContainerSmall: {
+    paddingHorizontal: 12,
+    height: 42,
+  },
   searchIcon: {
     marginRight: 12,
   },
@@ -226,6 +241,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-Regular',
     color: '#333333',
   },
+  searchInputSmall: {
+    fontSize: 14,
+  },
   filterButton: {
     width: 48,
     height: 48,
@@ -234,11 +252,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  filterButtonSmall: {
+    width: 42,
+    height: 42,
+  },
   filtersContainer: {
     backgroundColor: '#FFFFFF',
     paddingVertical: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#E9ECEF',
+  },
+  filtersContainerSmall: {
+    paddingVertical: 12,
   },
   filtersTitle: {
     fontSize: 16,
@@ -247,9 +272,18 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 24,
   },
+  filtersTitleSmall: {
+    fontSize: 14,
+    marginBottom: 8,
+    paddingHorizontal: 16,
+  },
   categoriesFilter: {
     paddingHorizontal: 20,
     gap: 8,
+  },
+  categoriesFilterSmall: {
+    paddingHorizontal: 16,
+    gap: 6,
   },
   categoryFilterButton: {
     paddingHorizontal: 16,
@@ -259,6 +293,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E9ECEF',
   },
+  categoryFilterButtonSmall: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+  },
   categoryFilterButtonActive: {
     backgroundColor: '#3483FA',
     borderColor: '#3483FA',
@@ -267,6 +306,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Inter-SemiBold',
     color: '#666666',
+  },
+  categoryFilterTextSmall: {
+    fontSize: 12,
   },
   categoryFilterTextActive: {
     color: '#FFFFFF',
